@@ -48,6 +48,13 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Debug Checkout
+        run: |
+          echo "Listing themes directory:"
+          ls -R themes || echo "Themes directory not found"
+          echo "Checking for .gitmodules:"
+          cat .gitmodules || echo ".gitmodules not found"
+
       - name: Install Docker CLI
         run: |
           set -e
