@@ -110,6 +110,11 @@ jobs:
             type=semver,pattern={{version}},suffix=-${{ steps.upstream.outputs.UPSTREAM_NAME }}${{ steps.upstream.outputs.UPSTREAM_VERSION }}
             # Tag 'edge' for main branch + upstream suffix (e.g. edge-keycloak26.3)
             type=edge,suffix=-${{ steps.upstream.outputs.UPSTREAM_NAME }}${{ steps.upstream.outputs.UPSTREAM_VERSION }}
+            # Tag with branch name + upstream suffix for non-default branches
+            # (e.g. fix-foo-keycloak26.3). Lets feature branches publish a
+            # distinct image so we can deploy and test patched builds in prod
+            # without overwriting the edge tag.
+            type=ref,event=branch,enable=${{ github.ref_name != 'main' }},suffix=-${{ steps.upstream.outputs.UPSTREAM_NAME }}${{ steps.upstream.outputs.UPSTREAM_VERSION }}
             # Simple SHA tag for every commit
             type=sha
             # PR tags (e.g. pr-123)
