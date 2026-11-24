@@ -21,11 +21,12 @@ permissions:
 
 jobs:
   claude:
-    # Only run when a human explicitly summons Claude with @claude. The github
+    # Only run when a human explicitly summons Claude with @claude; a comment
+    # starting "@claude review" belongs to the review workflow. The github
     # event context is inherited from the caller, so this gate works unchanged
     # when invoked as a reusable workflow.
     if: |
-      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude') && !startsWith(github.event.comment.body, '@claude review')) ||
       (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
       (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
       (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')))
