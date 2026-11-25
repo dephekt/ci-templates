@@ -8,9 +8,6 @@ on:
         type: string
         default: ""
         description: "Extra args passed to claude-code-action (optional)"
-    secrets:
-      CLAUDE_CODE_OAUTH_TOKEN:
-        required: true
 
 permissions:
   contents: read
@@ -21,11 +18,12 @@ permissions:
 
 jobs:
   claude:
-    # Only run when a human explicitly summons Claude with @claude. The github
+    # Only run when a human explicitly summons Claude with @claude; a comment
+    # starting "@claude review" belongs to the review workflow. The github
     # event context is inherited from the caller, so this gate works unchanged
     # when invoked as a reusable workflow.
     if: |
-      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude') && !startsWith(github.event.comment.body, '@claude review')) ||
       (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
       (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
       (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')))
@@ -40,7 +38,10 @@ jobs:
         id: claude
         uses: anthropics/claude-code-action@v1
         with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          anthropic_federation_rule_id: fdrl_01VojL1HiyuiXKPhwpGBog5y
+          anthropic_organization_id: 419a8109-6266-4a41-ac47-2219ed0042dc
+          anthropic_service_account_id: svac_01Mz4H4iiKifaS7qd6fEAjti
+          anthropic_workspace_id: wrkspc_01J2dp4tyQTNiLkevGeZxKHw
           additional_permissions: |
             actions: read
           claude_args: ${{ inputs.claude_args }}
