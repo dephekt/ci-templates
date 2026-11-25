@@ -38,9 +38,6 @@ on:
         type: string
         default: "Bash(gh issue view:*),Bash(gh search:*),Bash(gh issue list:*),Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr list:*),mcp__github_inline_comment__create_inline_comment"
         description: "Comma-separated allow-list passed to --allowedTools"
-    secrets:
-      CLAUDE_CODE_OAUTH_TOKEN:
-        required: true
 
 permissions:
   contents: read
@@ -105,7 +102,10 @@ jobs:
         id: claude-review
         uses: anthropics/claude-code-action@v1
         with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          anthropic_federation_rule_id: fdrl_01VojL1HiyuiXKPhwpGBog5y
+          anthropic_organization_id: 419a8109-6266-4a41-ac47-2219ed0042dc
+          anthropic_service_account_id: svac_01Mz4H4iiKifaS7qd6fEAjti
+          anthropic_workspace_id: wrkspc_01J2dp4tyQTNiLkevGeZxKHw
           plugin_marketplaces: ${{ inputs.plugin_marketplaces }}
           plugins: ${{ inputs.plugins }}
           prompt: ${{ steps.prompt.outputs.value }}
