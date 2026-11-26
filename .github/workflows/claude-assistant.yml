@@ -40,7 +40,6 @@ jobs:
         with:
           anthropic_federation_rule_id: fdrl_01VojL1HiyuiXKPhwpGBog5y
           anthropic_organization_id: 419a8109-6266-4a41-ac47-2219ed0042dc
-          anthropic_service_account_id: svac_01Mz4H4iiKifaS7qd6fEAjti
           anthropic_workspace_id: wrkspc_01J2dp4tyQTNiLkevGeZxKHw
           additional_permissions: |
             actions: read
